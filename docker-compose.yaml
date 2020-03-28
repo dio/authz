@@ -1,0 +1,18 @@
+version: "3"
+services:
+  envoy:
+    image: envoyproxy/envoy-alpine:v1.13.1
+    command: /usr/local/bin/envoy -c /etc/envoy.yaml --service-cluster envoy-proxy
+    ports:
+    - 8000:8000
+    - 9901:9901
+    volumes:
+    - ./envoy.yaml:/etc/envoy.yaml
+
+  authz:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: /usr/local/bin/authz
+    expose:
+    - "3001"
